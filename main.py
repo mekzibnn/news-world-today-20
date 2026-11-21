@@ -1,21 +1,17 @@
-"""Entrypoint for the news-image-20261120 entry.
+"""Put the finished front page where the grader looks for it."""
 
-Copies the rendered newspaper image into the directory make.fun
-provides, so the grader can find the entry image there.
-"""
-
-import os
-import shutil
-from pathlib import Path
+from os import environ, makedirs, path
 
 
-def main() -> None:
-    here = Path(__file__).resolve().parent
-    source = here / "entry.png"
-    output_dir = Path(os.environ["MAKEFUN_OUTPUT_DIR"])
-    output_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source, output_dir / "entry.png")
+def usher_front_page_to_grader():
+    newsroom = path.dirname(path.abspath(__file__))
+    satchel = path.join(newsroom, "entry.png")
+    dropbox = environ["MAKEFUN_OUTPUT_DIR"]
+    makedirs(dropbox, exist_ok=True)
+    parcel = path.join(dropbox, "entry.png")
+    with open(satchel, "rb") as inbound, open(parcel, "wb") as outbound:
+        for morsel in iter(lambda: inbound.read(65536), b""):
+            outbound.write(morsel)
 
 
-if __name__ == "__main__":
-    main()
+usher_front_page_to_grader()
