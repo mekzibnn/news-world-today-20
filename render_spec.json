@@ -1,0 +1,151 @@
+{
+  "masthead": "THE WORLD TODAY \u2014 Friday 20 November 2026",
+  "subline": "Everything on this page happened, or was first reported, on Friday 20 November 2026.",
+  "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map. No timeline strip (dropped in v5: 9px text unreadable at 300px).",
+  "proof_tags": "CONFIRMED / CLAIM tags on lead stories; claims attributed to sources.",
+  "timeline": [],
+  "numbers": [
+    "110+ Missiles fired at Ukraine overnight",
+    "400+ Drones in Russia's overnight barrage",
+    "$2.36bn GTA VI's first-day sales (Sensor Tower)",
+    "\u221212% Anthropic shares, premarket Friday",
+    "M4.4 Los Angeles earthquake, 03:25 PT",
+    "100,000 EU\u2013UK youth mobility places a year"
+  ],
+  "min_body_px": 12.5,
+  "page_scroll_height": 1024,
+  "foot_bottom_px": 969,
+  "wrapped_briefs": [],
+  "overflow": [],
+  "audit": [
+    {
+      "id": "page",
+      "sh": 1024,
+      "ch": 1024,
+      "sw": 1024,
+      "cw": 1024,
+      "overflow": false
+    },
+    {
+      "id": "lead-1",
+      "sh": 186,
+      "ch": 186,
+      "sw": 317,
+      "cw": 317,
+      "overflow": false
+    },
+    {
+      "id": "lead-2",
+      "sh": 186,
+      "ch": 186,
+      "sw": 317,
+      "cw": 317,
+      "overflow": false
+    },
+    {
+      "id": "lead-3",
+      "sh": 186,
+      "ch": 186,
+      "sw": 317,
+      "cw": 317,
+      "overflow": false
+    },
+    {
+      "id": "story-4",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-5",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-6",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-7",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-8",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-9",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-10",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "story-11",
+      "sh": 133,
+      "ch": 133,
+      "sw": 235,
+      "cw": 235,
+      "overflow": false
+    },
+    {
+      "id": "briefs",
+      "sh": 296,
+      "ch": 296,
+      "sw": 666,
+      "cw": 666,
+      "overflow": false
+    },
+    {
+      "id": "numbers",
+      "sh": 49,
+      "ch": 49,
+      "sw": 976,
+      "cw": 976,
+      "overflow": false
+    },
+    {
+      "id": "datecheck",
+      "sh": 45,
+      "ch": 45,
+      "sw": 972,
+      "cw": 972,
+      "overflow": false
+    },
+    {
+      "id": "foot",
+      "sh": 27,
+      "ch": 27,
+      "sw": 976,
+      "cw": 976,
+      "overflow": false
+    }
+  ],
+  "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62\u201333', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct."
+}
