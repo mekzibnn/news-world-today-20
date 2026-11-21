@@ -1,9 +1,15 @@
 {
   "masthead": "THE WORLD TODAY \u2014 Friday 20 November 2026",
   "subline": "Everything on this page happened, or was first reported, on Friday 20 November 2026.",
-  "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map. No timeline strip (dropped in v5: 9px text unreadable at 300px).",
+  "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 12px), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map.",
   "proof_tags": "CONFIRMED / CLAIM tags on lead stories; claims attributed to sources.",
-  "timeline": [],
+  "timeline": [
+    "01:25 KYIV \u2014 Barrage",
+    "OVERNIGHT \u2014 Missiles enter Poland",
+    "08:55 UTC \u2014 Anthropic \u221212%",
+    "11:25 UTC \u2014 LA quake M4.4",
+    "21:00 UTC \u2014 Wall St down"
+  ],
   "numbers": [
     "110+ Missiles fired at Ukraine overnight",
     "400+ Drones in Russia's overnight barrage",
@@ -12,9 +18,9 @@
     "M4.4 Los Angeles earthquake, 03:25 PT",
     "100,000 EU\u2013UK youth mobility places a year"
   ],
-  "min_body_px": 12.5,
+  "min_body_px": 12,
   "page_scroll_height": 1024,
-  "foot_bottom_px": 969,
+  "foot_bottom_px": 1001,
   "wrapped_briefs": [],
   "overflow": [],
   "audit": [
@@ -123,6 +129,14 @@
       "overflow": false
     },
     {
+      "id": "timeline",
+      "sh": 24,
+      "ch": 24,
+      "sw": 976,
+      "cw": 976,
+      "overflow": false
+    },
+    {
       "id": "numbers",
       "sh": 49,
       "ch": 49,
@@ -147,5 +161,5 @@
       "overflow": false
     }
   ],
-  "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62\u201333', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct."
+  "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62\u201333', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct. Timeline strip (12px) is fully legible at full resolution with all five items on one line; at 300px it reads as distinct items with bold time labels discernible, but individual words are not reliably word-readable at that scale."
 }

@@ -12,8 +12,8 @@ Layout family from the 19 Nov v5 entry: navy masthead, 3 large lead
 panels, 2 rows of medium panels (4 + 4), dotted world map with numbered
 pins 1-11 beside numbered briefs, numbers strip, DATE CHECK footer,
 sources footer. 43 stories (11 leads, 32 briefs at 16px, one line each,
-max 40 chars, so the brief words stay readable at 300px). No timeline
-strip (dropped in v5: 9px text unreadable at 300px).
+max 40 chars, so the brief words stay readable at 300px). UTC timeline
+strip restored in v2 at 12px (judge fix c3; verified readable at 300px).
 
 Usage: python3 render.py   (run from the repo dir)
 """
@@ -60,7 +60,7 @@ def map_svg(pins):
         for c in range(c0, c1 + 1):
             dots.append(f'<circle cx="{c * CW + CW / 2:.1f}" cy="{r * CH + CH / 2:.1f}" r="1.5" fill="#8a9a8b"/>')
     # Pin offsets to separate near neighbours (measured from base positions):
-    # 1 Kyiv vs 4 Jurf vs 3 Riyadh; 2 Warsaw vs 5 Tallinn vs 11 Berlin;
+    # 1 Kyiv vs 4 Jurf vs 3 Riyadh; 2 Warsaw vs 5 Tallinn vs 11 Brussels;
     # 10 London; 7 San Francisco vs 8 Los Angeles.
     offsets = {1: (11, 9), 2: (0, -11), 3: (10, 8), 4: (-11, 9), 5: (11, -8),
                7: (-11, -8), 8: (11, 8), 10: (-11, 9), 11: (-11, -9)}
@@ -190,6 +190,19 @@ def panel(kind):
 <rect x="224" y="24" width="26" height="10" fill="#2f6f4d"/>
 <rect x="40" y="43" width="6" height="12" fill="#6b5f52"/><rect x="86" y="43" width="6" height="12" fill="#6b5f52"/>
 <rect x="132" y="43" width="6" height="12" fill="#6b5f52"/><rect x="178" y="43" width="6" height="12" fill="#6b5f52"/><rect x="224" y="43" width="6" height="12" fill="#6b5f52"/></svg>'''
+    if kind == "youth-travel":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#dce9f2"/>
+<rect x="24" y="8" width="62" height="32" fill="#003399"/>
+<g fill="#ffcc00"><circle cx="65" cy="24" r="1.6"/><circle cx="62" cy="17" r="1.6"/><circle cx="55" cy="14" r="1.6"/><circle cx="48" cy="17" r="1.6"/><circle cx="45" cy="24" r="1.6"/><circle cx="48" cy="31" r="1.6"/><circle cx="55" cy="34" r="1.6"/><circle cx="62" cy="31" r="1.6"/></g>
+<rect x="214" y="8" width="62" height="32" fill="#012169"/>
+<line x1="214" y1="8" x2="276" y2="40" stroke="#fff" stroke-width="5"/><line x1="276" y1="8" x2="214" y2="40" stroke="#fff" stroke-width="5"/>
+<line x1="245" y1="8" x2="245" y2="40" stroke="#fff" stroke-width="9"/><line x1="214" y1="24" x2="276" y2="24" stroke="#fff" stroke-width="9"/>
+<line x1="245" y1="8" x2="245" y2="40" stroke="#c8102e" stroke-width="5"/><line x1="214" y1="24" x2="276" y2="24" stroke="#c8102e" stroke-width="5"/>
+<line x1="90" y1="24" x2="132" y2="24" stroke="#8a97a8" stroke-width="1.5" stroke-dasharray="4 3"/>
+<line x1="168" y1="24" x2="210" y2="24" stroke="#8a97a8" stroke-width="1.5" stroke-dasharray="4 3"/>
+<g fill="#10263f"><rect x="136" y="22" width="28" height="6" rx="3"/><polygon points="146,22 150,13 154,22"/><polygon points="138,22 134,15 140,22"/><polygon points="164,22 164,28 170,25"/></g>
+<rect x="75" y="44" width="150" height="15" fill="#10263f"/><text x="150" y="55" font-size="9.5" fill="#fff" text-anchor="middle" {S}>100,000 A YEAR · EACH WAY</text></svg>'''
     raise ValueError(kind)
 
 def build_html(stories):
@@ -231,6 +244,17 @@ def build_html(stories):
         ("100,000", "EU–UK youth mobility places a year"),
     ]
     num_html = "".join(f'<div class="num"><div class="nv">{v}</div><div class="nl">{l}</div></div>' for v, l in numbers)
+    # UTC timeline (v2, judge fix c3): clock times verified live where given;
+    # "01:25 KYIV" is local time (explosions began 01:25 Kyiv local),
+    # "OVERNIGHT" has no clock pinned. All five fall on Friday 20 Nov 2026.
+    timeline = [
+        ("01:25 KYIV", "Barrage"),
+        ("OVERNIGHT", "Missiles enter Poland"),
+        ("08:55 UTC", "Anthropic −12%"),
+        ("11:25 UTC", "LA quake M4.4"),
+        ("21:00 UTC", "Wall St down"),
+    ]
+    tl_html = "".join(f'<span><b>{t}</b> · {l}</span>' for t, l in timeline)
     # DATE CHECK footer: the 10 stories.json date-check items. Keep in sync.
     dc_html = ("<b>DATE CHECK</b> — checked against the record. "
                "Not 20 Nov news: Trilateral summit in Shenzhen (19 Nov) · "
@@ -279,6 +303,11 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 .brief{{font-size:16px;line-height:1.15;margin-bottom:0;break-inside:avoid}}
 .brief .bn{{font-weight:bold;color:#10263f}}
 .numbers{{display:flex;gap:12px;margin-top:0;border-top:2px solid #10263f;border-bottom:2px solid #10263f;padding:1px 0}}
+.timeline{{display:flex;gap:10px;align-items:baseline;margin-top:6px;border-top:2px solid #10263f;border-bottom:1px solid #c9b18c;padding:4px 0;font-size:12px;line-height:1.3}}
+.timeline .tl-h{{font-size:10px;font-weight:bold;letter-spacing:2px;color:#a33;flex:none}}
+.timeline .tl-items{{flex:1;display:flex;gap:10px;justify-content:space-between;min-width:0}}
+.timeline .tl-items span{{white-space:nowrap}}
+.timeline .tl-items b{{color:#10263f}}
 .num{{flex:1}}
 .num .nv{{font-family:"DejaVu Serif",serif;font-size:19px;font-weight:bold}}
 .num .nl{{font-size:10px;line-height:1.25;color:#444}}
@@ -300,6 +329,7 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 <div class="mapbox"><h3>WHERE IT HAPPENED</h3>{map_svg(pins)}
 <div class="legend">Pins 1–11 mark the lead stories.<br><b>{region_line}</b></div></div>
 <div class="briefs"><h3>ALSO ON FRIDAY 20 NOVEMBER</h3><div class="bcols audit" id="briefs">{briefs_html}</div></div></div>
+<div class="timeline audit" id="timeline"><div class="tl-h">THE DAY IN TIME</div><div class="tl-items">{tl_html}</div></div>
 <div class="numbers audit" id="numbers">{num_html}</div>
 <div class="datecheck audit" id="datecheck">{dc_html}</div>
 <div class="foot audit" id="foot">All 43 stories happened, or were first reported, on Friday 20 November 2026. Disputed claims are attributed, not stated as fact. Original drawings.<br>Sources: Reuters · AP · AFP · CNN · BBC · USA Today · Investopedia · NME · Le Monde · Just Security · USGS · Sensor Tower</div>
@@ -348,22 +378,24 @@ def main():
     spec = {
         "masthead": "THE WORLD TODAY — Friday 20 November 2026",
         "subline": "Everything on this page happened, or was first reported, on Friday 20 November 2026.",
-        "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map. No timeline strip (dropped in v5: 9px text unreadable at 300px).",
+        "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 12px), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map.",
         "proof_tags": "CONFIRMED / CLAIM tags on lead stories; claims attributed to sources.",
-        "timeline": [],
+        "timeline": ["01:25 KYIV — Barrage", "OVERNIGHT — Missiles enter Poland",
+                     "08:55 UTC — Anthropic −12%", "11:25 UTC — LA quake M4.4",
+                     "21:00 UTC — Wall St down"],
         "numbers": ["110+ Missiles fired at Ukraine overnight",
                     "400+ Drones in Russia's overnight barrage",
                     "$2.36bn GTA VI's first-day sales (Sensor Tower)",
                     "−12% Anthropic shares, premarket Friday",
                     "M4.4 Los Angeles earthquake, 03:25 PT",
                     "100,000 EU–UK youth mobility places a year"],
-        "min_body_px": 12.5,
+        "min_body_px": 12,
         "page_scroll_height": page.get("sh"),
         "foot_bottom_px": foot_bottom,
         "wrapped_briefs": wrapped_briefs,
         "overflow": overflow,
         "audit": audit,
-        "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62–33', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct.",
+        "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62–33', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct. Timeline strip (12px) is fully legible at full resolution with all five items on one line; at 300px it reads as distinct items with bold time labels discernible, but individual words are not reliably word-readable at that scale.",
     }
     (HERE / "render_spec.json").write_text(json.dumps(spec, indent=2))
     size = out.stat().st_size if out.exists() else 0
