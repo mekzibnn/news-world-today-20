@@ -13,12 +13,15 @@ panels, 2 rows of medium panels (4 + 4), dotted world map with numbered
 pins 1-11 beside numbered briefs, numbers strip, DATE CHECK footer,
 sources footer. 43 stories (11 leads, 32 briefs at 16px, one line each,
 max 40 chars, so the brief words stay readable at 300px). UTC timeline
-strip restored in v2 at 12px (judge fix c3; verified readable at 300px).
+strip rebuilt in v3 at 16px in two rows (3+2) with full labels (judge fix c3;
+the v2 12px one-row strip was not word-readable at 300px).
 
 Usage: python3 render.py   (run from the repo dir)
 """
 import json, subprocess, sys
 from pathlib import Path
+from timeline import (MIN_SLACK_PX, TIMELINE_ITEMS, check_timeline_audit,
+                      timeline_css, timeline_html)
 
 HERE = Path(__file__).resolve().parent
 _CANDIDATES = [
@@ -244,17 +247,9 @@ def build_html(stories):
         ("100,000", "EU–UK youth mobility places a year"),
     ]
     num_html = "".join(f'<div class="num"><div class="nv">{v}</div><div class="nl">{l}</div></div>' for v, l in numbers)
-    # UTC timeline (v2, judge fix c3): clock times verified live where given;
-    # "01:25 KYIV" is local time (explosions began 01:25 Kyiv local),
-    # "OVERNIGHT" has no clock pinned. All five fall on Friday 20 Nov 2026.
-    timeline = [
-        ("01:25 KYIV", "Barrage"),
-        ("OVERNIGHT", "Missiles enter Poland"),
-        ("08:55 UTC", "Anthropic −12%"),
-        ("11:25 UTC", "LA quake M4.4"),
-        ("21:00 UTC", "Wall St down"),
-    ]
-    tl_html = "".join(f'<span><b>{t}</b> · {l}</span>' for t, l in timeline)
+    # UTC timeline (v3, judge fix c3): rendered by timeline.py -- 5 items at
+    # 16px in two rows (3+2) with full labels; clock times verified live.
+    tl_html = timeline_html(TIMELINE_ITEMS)
     # DATE CHECK footer: the 10 stories.json date-check items. Keep in sync.
     dc_html = ("<b>DATE CHECK</b> — checked against the record. "
                "Not 20 Nov news: Trilateral summit in Shenzhen (19 Nov) · "
@@ -289,8 +284,10 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 .kicker .rk{{color:#a33}}.kicker .src{{color:#8a97a8;font-weight:normal}}
 .head{{font-family:"DejaVu Serif",serif;font-weight:bold;line-height:1.12}}
 .lead .head{{font-size:18px;margin-top:1px}}
-.med .head{{font-size:15px;margin-top:1px}}
+.med .head{{font-size:14px;margin-top:1px}}
 .deck{{font-size:12.5px;line-height:1.3;margin-top:1px}}
+.med .deck{{line-height:1.2}}
+.med .kicker{{margin-top:1px}}
 .tag{{font-size:8px;font-weight:bold;border:1px solid #8a97a8;border-radius:2px;padding:0 3px;color:#5b6a7d;white-space:nowrap}}
 .mapbrief{{display:flex;gap:14px;margin-top:0}}
 .mapbox{{width:296px;flex:none}}
@@ -300,14 +297,10 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 .briefs{{flex:1;min-width:0}}
 .briefs h3{{margin-bottom:3px}}
 .bcols{{column-count:2;column-gap:16px;padding-bottom:2px}}
-.brief{{font-size:16px;line-height:1.15;margin-bottom:0;break-inside:avoid}}
+.brief{{font-size:16px;line-height:1.11;margin-bottom:0;break-inside:avoid}}
 .brief .bn{{font-weight:bold;color:#10263f}}
 .numbers{{display:flex;gap:12px;margin-top:0;border-top:2px solid #10263f;border-bottom:2px solid #10263f;padding:1px 0}}
-.timeline{{display:flex;gap:10px;align-items:baseline;margin-top:6px;border-top:2px solid #10263f;border-bottom:1px solid #c9b18c;padding:4px 0;font-size:12px;line-height:1.3}}
-.timeline .tl-h{{font-size:10px;font-weight:bold;letter-spacing:2px;color:#a33;flex:none}}
-.timeline .tl-items{{flex:1;display:flex;gap:10px;justify-content:space-between;min-width:0}}
-.timeline .tl-items span{{white-space:nowrap}}
-.timeline .tl-items b{{color:#10263f}}
+{timeline_css()}
 .num{{flex:1}}
 .num .nv{{font-family:"DejaVu Serif",serif;font-size:19px;font-weight:bold}}
 .num .nl{{font-size:10px;line-height:1.25;color:#444}}
@@ -315,6 +308,7 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 .datecheck b{{color:#a33}}
 .foot{{margin-top:0;font-size:9.5px;color:#666;line-height:1.4}}
 #audit{{display:none}}
+#tlaudit{{display:none}}
 #footbottom{{display:none}}
 </style></head><body><div class="page audit" id="page">
 <div class="mast">
@@ -329,11 +323,12 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 <div class="mapbox"><h3>WHERE IT HAPPENED</h3>{map_svg(pins)}
 <div class="legend">Pins 1–11 mark the lead stories.<br><b>{region_line}</b></div></div>
 <div class="briefs"><h3>ALSO ON FRIDAY 20 NOVEMBER</h3><div class="bcols audit" id="briefs">{briefs_html}</div></div></div>
-<div class="timeline audit" id="timeline"><div class="tl-h">THE DAY IN TIME</div><div class="tl-items">{tl_html}</div></div>
+<div class="timeline audit" id="timeline">{tl_html}</div>
 <div class="numbers audit" id="numbers">{num_html}</div>
 <div class="datecheck audit" id="datecheck">{dc_html}</div>
 <div class="foot audit" id="foot">All 43 stories happened, or were first reported, on Friday 20 November 2026. Disputed claims are attributed, not stated as fact. Original drawings.<br>Sources: Reuters · AP · AFP · CNN · BBC · USA Today · Investopedia · NME · Le Monde · Just Security · USGS · Sensor Tower</div>
 <pre id="audit"></pre>
+<pre id="tlaudit"></pre>
 <pre id="footbottom"></pre>
 </div>
 <script>
@@ -349,6 +344,20 @@ window.addEventListener('load', () => {{
   document.querySelectorAll('.brief').forEach(b => {{
     if (b.scrollHeight > 20) wrapped.push(b.querySelector('.bn').textContent);
   }});
+  const tlRows = [...document.querySelectorAll('.tl-row')];
+  const tlItems = [...document.querySelectorAll('.tl-row span')];
+  let tlSlack = null;
+  tlRows.forEach(row => {{
+    const spans = row.querySelectorAll('span');
+    if (spans.length) {{
+      const last = spans[spans.length - 1];
+      const s = row.getBoundingClientRect().right - last.getBoundingClientRect().right;
+      tlSlack = tlSlack === null ? s : Math.min(tlSlack, s);
+    }}
+  }});
+  const tlFont = tlItems.length ? parseFloat(getComputedStyle(tlItems[0]).fontSize) : 0;
+  const tlWrapped = tlItems.filter(sp => sp.scrollWidth > sp.clientWidth + 1).map(sp => sp.textContent);
+  document.getElementById('tlaudit').textContent = JSON.stringify({{slack_px: Math.round(tlSlack), min_font_px: tlFont, items: tlItems.length, wrapped: tlWrapped}});
   document.getElementById('footbottom').textContent = String(Math.round(document.getElementById('foot').getBoundingClientRect().bottom)) + '|' + wrapped.join(',');
 }});
 </script>
@@ -373,16 +382,18 @@ def main():
     m2 = re.search(r'<pre id="footbottom">(\d+)\|(.*?)</pre>', r2.stdout, re.S)
     foot_bottom = int(m2.group(1)) if m2 else None
     wrapped_briefs = [w for w in (m2.group(2).split(",") if m2 else []) if w]
+    m3 = re.search(r'<pre id="tlaudit">(.*?)</pre>', r2.stdout, re.S)
+    tl_audit = json.loads(m3.group(1)) if m3 else {}
+    tl_problems = check_timeline_audit(tl_audit)
     overflow = [a["id"] for a in audit if a["overflow"]]
     page = next((a for a in audit if a["id"] == "page"), {})
     spec = {
         "masthead": "THE WORLD TODAY — Friday 20 November 2026",
         "subline": "Everything on this page happened, or was first reported, on Friday 20 November 2026.",
-        "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 12px), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map.",
+        "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 16px, two rows 3+2), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map.",
         "proof_tags": "CONFIRMED / CLAIM tags on lead stories; claims attributed to sources.",
-        "timeline": ["01:25 KYIV — Barrage", "OVERNIGHT — Missiles enter Poland",
-                     "08:55 UTC — Anthropic −12%", "11:25 UTC — LA quake M4.4",
-                     "21:00 UTC — Wall St down"],
+        "timeline": [f"{t} — {l}" for t, l in TIMELINE_ITEMS],
+        "timeline_audit": tl_audit,
         "numbers": ["110+ Missiles fired at Ukraine overnight",
                     "400+ Drones in Russia's overnight barrage",
                     "$2.36bn GTA VI's first-day sales (Sensor Tower)",
@@ -395,12 +406,12 @@ def main():
         "wrapped_briefs": wrapped_briefs,
         "overflow": overflow,
         "audit": audit,
-        "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62–33', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct. Timeline strip (12px) is fully legible at full resolution with all five items on one line; at 300px it reads as distinct items with bold time labels discernible, but individual words are not reliably word-readable at that scale.",
+        "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62–33', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct. Timeline strip (16px, two rows 3+2) is fully legible at full resolution; at 300px all five items are word-readable (verified by viewing a 3x zoom of the actual 300px downscale: '01:25 KYIV · Barrage', 'OVERNIGHT · Missiles enter Poland', '08:55 UTC · Anthropic −12%', '11:25 UTC · LA quake M4.4', '21:00 UTC · Wall St down').",
     }
     (HERE / "render_spec.json").write_text(json.dumps(spec, indent=2))
     size = out.stat().st_size if out.exists() else 0
-    print(f"entry.png: {size} bytes; page scrollHeight={page.get('sh')} (limit 1024); foot_bottom={foot_bottom} (limit 1024); overflow={overflow or 'none'}; wrapped_briefs={wrapped_briefs or 'none'}")
-    return 0 if (out.exists() and size <= 1048576 and not overflow and not wrapped_briefs and page.get("sh", 9999) <= 1024 and (foot_bottom or 9999) <= 1024) else 1
+    print(f"entry.png: {size} bytes; page scrollHeight={page.get('sh')} (limit 1024); foot_bottom={foot_bottom} (limit 1024); overflow={overflow or 'none'}; wrapped_briefs={wrapped_briefs or 'none'}; timeline slack={tl_audit.get('slack_px')}px (min {MIN_SLACK_PX}); timeline font={tl_audit.get('min_font_px')}px; timeline problems={tl_problems or 'none'}")
+    return 0 if (out.exists() and size <= 1048576 and not overflow and not wrapped_briefs and page.get("sh", 9999) <= 1024 and (foot_bottom or 9999) <= 1024 and not tl_problems) else 1
 
 if __name__ == "__main__":
     sys.exit(main())
