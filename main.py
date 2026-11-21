@@ -1,22 +1,20 @@
-#!/usr/bin/env python3
-"""news-image-20261120 entry program.
+"""Entrypoint for the news-image-20261120 entry.
 
-Copies the pre-built front-page image (entry.png, in this repository) to
-/output/entry.png. Standard library only, no network, deterministic: the
-same input bytes always produce the same output bytes.
+Copies the rendered newspaper image into the directory make.fun
+provides, so the grader can find the entry image there.
 """
+
 import os
 import shutil
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-SRC = HERE / "entry.png"
-DEST = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")) / "entry.png"
 
-
-def main():
-    DEST.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(SRC, DEST)
+def main() -> None:
+    here = Path(__file__).resolve().parent
+    source = here / "entry.png"
+    output_dir = Path(os.environ["MAKEFUN_OUTPUT_DIR"])
+    output_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, output_dir / "entry.png")
 
 
 if __name__ == "__main__":
