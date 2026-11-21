@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Two-row UTC timeline for the news-image-20261120 front page (v3).
+"""Two-row UTC timeline for the news-image-20261120 front page (v4).
 
 The strip is "THE DAY IN TIME": five clock items from Friday 20 November
 2026, set at 16px in two rows (3 + 2) with their full labels. v2 set the
@@ -20,9 +20,10 @@ verify.py; a violation fails the render, it never ships silently):
 
 Clock times were verified live at build time: 01:25 is Kyiv local time
 (first explosions), OVERNIGHT has no clock pinned (the Polish incursion
-happened during the overnight barrage), 08:55 UTC is when the Anthropic
-slide was first reported, 11:25 UTC is 03:25 PT (USGS), 21:00 UTC is the
-16:00 ET NYSE close. All five fall on Friday 20 November 2026.
+happened during the overnight barrage), 08:00 IST is the midpoint of
+Akvan's landfall window near Gopalpur (07:30–08:30 IST, IMD), 11:25 UTC
+is 03:25 PT (USGS), 21:00 UTC is the 16:00 ET NYSE close. All five fall
+on Friday 20 November 2026.
 
 Build-time only: render.py imports this module and inlines its HTML and
 CSS into page.html. The graded program (main.py) only copies entry.png.
@@ -32,7 +33,7 @@ CSS into page.html. The graded program (main.py) only copies entry.png.
 TIMELINE_ITEMS = [
     ("01:25 KYIV", "Barrage"),
     ("OVERNIGHT", "Missiles enter Poland"),
-    ("08:55 UTC", "Anthropic \u221212%"),
+    ("08:00 IST", "Akvan landfall Gopalpur"),
     ("11:25 UTC", "LA quake M4.4"),
     ("21:00 UTC", "Wall St down"),
 ]

@@ -1,32 +1,32 @@
 {
-  "masthead": "THE WORLD TODAY \u2014 Friday 20 November 2026",
+  "masthead": "THE WORLD IN ONE DAY \u2014 Friday 20 November 2026",
   "subline": "Everything on this page happened, or was first reported, on Friday 20 November 2026.",
-  "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 16px, two rows 3+2), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map.",
+  "layout": "Newspaper front page: cream masthead with giant serif date, 6-number strip and coloured region bar under the masthead, 3 large lead panels, 2 rows of medium panels (5 + 5), dotted world map with numbered pins 1-13 beside 22 numbered briefs in 2 columns at 16px (briefs one line each, max ~35 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 16px, two rows 3+2), DATE CHECK footer (9 items, 'left out as 19 Nov news' framing), sources footer. Region counts in the coloured bar under the masthead.",
   "proof_tags": "CONFIRMED / CLAIM tags on lead stories; claims attributed to sources.",
   "timeline": [
     "01:25 KYIV \u2014 Barrage",
     "OVERNIGHT \u2014 Missiles enter Poland",
-    "08:55 UTC \u2014 Anthropic \u221212%",
+    "08:00 IST \u2014 Akvan landfall Gopalpur",
     "11:25 UTC \u2014 LA quake M4.4",
     "21:00 UTC \u2014 Wall St down"
   ],
   "timeline_audit": {
-    "slack_px": 165,
+    "slack_px": 110,
     "min_font_px": 16,
     "items": 5,
     "wrapped": []
   },
   "numbers": [
-    "110+ Missiles fired at Ukraine overnight",
-    "400+ Drones in Russia's overnight barrage",
-    "$2.36bn GTA VI's first-day sales (Sensor Tower)",
-    "\u221212% Anthropic shares, premarket Friday",
-    "M4.4 Los Angeles earthquake, 03:25 PT",
-    "100,000 EU\u2013UK youth mobility places a year"
+    "3 Bridges damaged in Kyiv",
+    "300,000+ People moved to shelters before Akvan",
+    "\u22126.2% Taiwan's share index, Friday's close",
+    "100,000 Youth visas a year in the UK\u2013EU deal",
+    "2.3% Japan consumer inflation in October",
+    "118 Runs by Glenn Phillips against India"
   ],
   "min_body_px": 12,
   "page_scroll_height": 1024,
-  "foot_bottom_px": 1011,
+  "foot_bottom_px": 980,
   "wrapped_briefs": [],
   "overflow": [],
   "audit": [
@@ -39,97 +39,121 @@
       "overflow": false
     },
     {
+      "id": "numbers",
+      "sh": 49,
+      "ch": 49,
+      "sw": 976,
+      "cw": 976,
+      "overflow": false
+    },
+    {
       "id": "lead-1",
-      "sh": 186,
-      "ch": 186,
+      "sh": 202,
+      "ch": 202,
       "sw": 317,
       "cw": 317,
       "overflow": false
     },
     {
       "id": "lead-2",
-      "sh": 186,
-      "ch": 186,
+      "sh": 202,
+      "ch": 202,
       "sw": 317,
       "cw": 317,
       "overflow": false
     },
     {
       "id": "lead-3",
-      "sh": 186,
-      "ch": 186,
+      "sh": 202,
+      "ch": 202,
       "sw": 317,
       "cw": 317,
       "overflow": false
     },
     {
       "id": "story-4",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-5",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-6",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-7",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 117,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-8",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 117,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-9",
-      "sh": 127,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-10",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "story-11",
-      "sh": 128,
-      "ch": 127,
-      "sw": 235,
-      "cw": 235,
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
+      "overflow": false
+    },
+    {
+      "id": "story-12",
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
+      "overflow": false
+    },
+    {
+      "id": "story-13",
+      "sh": 118,
+      "ch": 117,
+      "sw": 186,
+      "cw": 186,
       "overflow": false
     },
     {
       "id": "briefs",
-      "sh": 286,
-      "ch": 286,
+      "sh": 197,
+      "ch": 197,
       "sw": 666,
       "cw": 666,
       "overflow": false
@@ -138,14 +162,6 @@
       "id": "timeline",
       "sh": 55,
       "ch": 55,
-      "sw": 976,
-      "cw": 976,
-      "overflow": false
-    },
-    {
-      "id": "numbers",
-      "sh": 49,
-      "ch": 49,
       "sw": 976,
       "cw": 976,
       "overflow": false
@@ -167,5 +183,5 @@
       "overflow": false
     }
   ],
-  "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62\u201333', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct. Timeline strip (16px, two rows 3+2) is fully legible at full resolution; at 300px all five items are word-readable (verified by viewing a 3x zoom of the actual 300px downscale: '01:25 KYIV \u00b7 Barrage', 'OVERNIGHT \u00b7 Missiles enter Poland', '08:55 UTC \u00b7 Anthropic \u221212%', '11:25 UTC \u00b7 LA quake M4.4', '21:00 UTC \u00b7 Wall St down')."
+  "legibility_note": "Checked by viewing entry.png full-res and the 300px downscale: at 300px the masthead date, the six numbers-strip values and the three lead heads stay word-readable; the 22 briefs read as distinct single lines; the region bar reads as coloured chips; the timeline's five items are word-readable ('01:25 KYIV \u00b7 Barrage', 'OVERNIGHT \u00b7 Missiles enter Poland', '08:00 IST \u00b7 Akvan landfall Gopalpur', '11:25 UTC \u00b7 LA quake M4.4', '21:00 UTC \u00b7 Wall St down'); map pins stay distinct, Europe/Mideast and East-Asia clusters separated by leader lines. Lead decks and med decks are legible at full resolution; at 300px they read as text lines rather than individual words. Med kickers are one line each (topic dropped from med kickers in v4 to avoid wrapping)."
 }

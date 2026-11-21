@@ -8,13 +8,16 @@ entry.png, which the kit explicitly sanctions. This script:
   3. runs an overflow audit (every .audit element + the page itself) and
      writes render_spec.json (min_body_px, overflow list, layout metadata).
 
-Layout family from the 19 Nov v5 entry: navy masthead, 3 large lead
-panels, 2 rows of medium panels (4 + 4), dotted world map with numbered
-pins 1-11 beside numbered briefs, numbers strip, DATE CHECK footer,
-sources footer. 43 stories (11 leads, 32 briefs at 16px, one line each,
-max 40 chars, so the brief words stay readable at 300px). UTC timeline
-strip rebuilt in v3 at 16px in two rows (3+2) with full labels (judge fix c3;
-the v2 12px one-row strip was not word-readable at 300px).
+Layout family from the 19 Nov v5 entry, reworked for v4 on the top-1–5
+winner pattern: cream masthead with a giant serif date, a 6-number strip
+and a coloured region bar under the masthead, 3 large lead panels, 2 rows
+of medium panels (5 + 5), dotted world map with numbered pins 1-13 beside
+numbered briefs, numbers strip, DATE CHECK footer, sources footer.
+35 stories (13 leads, 22 briefs at 16px, one line each, max ~35 chars —
+wide-cap titles wrap above that, so keep titles short — so the brief
+words stay readable at 300px). UTC timeline strip rebuilt in v3
+at 16px in two rows (3+2) with full labels (judge fix c3; the v2 12px
+one-row strip was not word-readable at 300px).
 
 Usage: python3 render.py   (run from the repo dir)
 """
@@ -63,10 +66,12 @@ def map_svg(pins):
         for c in range(c0, c1 + 1):
             dots.append(f'<circle cx="{c * CW + CW / 2:.1f}" cy="{r * CH + CH / 2:.1f}" r="1.5" fill="#8a9a8b"/>')
     # Pin offsets to separate near neighbours (measured from base positions):
-    # 1 Kyiv vs 4 Jurf vs 3 Riyadh; 2 Warsaw vs 5 Tallinn vs 11 Brussels;
-    # 10 London; 7 San Francisco vs 8 Los Angeles.
-    offsets = {1: (11, 9), 2: (0, -11), 3: (10, 8), 4: (-11, 9), 5: (11, -8),
-               7: (-11, -8), 8: (11, 8), 10: (-11, 9), 11: (-11, -9)}
+    # Europe/Mideast cluster: 1 Kyiv vs 6 Warsaw vs 4 Brussels vs 8 Rome
+    # vs 5 Antalya vs 7 Jurf; East Asia cluster: 3 Taipei vs 10 Seoul
+    # vs 9 Tokyo; 13 Wellington sits at the map's right edge.
+    offsets = {1: (14, 10), 3: (0, 12), 5: (-6, 12), 6: (0, -12),
+               7: (12, 8), 8: (-12, 8), 9: (12, 6), 10: (8, -12),
+               13: (-8, 0)}
     pin_els = []
     for n, lon, lat in pins:
         x = (lon + 180) / 360 * W
@@ -206,20 +211,118 @@ def panel(kind):
 <line x1="168" y1="24" x2="210" y2="24" stroke="#8a97a8" stroke-width="1.5" stroke-dasharray="4 3"/>
 <g fill="#10263f"><rect x="136" y="22" width="28" height="6" rx="3"/><polygon points="146,22 150,13 154,22"/><polygon points="138,22 134,15 140,22"/><polygon points="164,22 164,28 170,25"/></g>
 <rect x="75" y="44" width="150" height="15" fill="#10263f"/><text x="150" y="55" font-size="9.5" fill="#fff" text-anchor="middle" {S}>100,000 A YEAR · EACH WAY</text></svg>'''
+    if kind == "cyclone":
+        return f'''<svg viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="90" fill="#dce9f2"/>
+<circle cx="110" cy="42" r="32" fill="none" stroke="#10263f" stroke-width="2.5"/>
+<path d="M110 42 a18 18 0 0 1 18 -18 a24 24 0 0 1 -6 32 a13 13 0 0 1 -18 -8" fill="none" stroke="#10263f" stroke-width="2.5"/>
+<circle cx="110" cy="42" r="6" fill="#a33"/>
+<path d="M200 12 L218 34 M224 10 L242 32 M200 44 L218 66 M224 42 L242 64" stroke="#10263f" stroke-width="2.5"/>
+<rect x="0" y="76" width="300" height="14" fill="#8a9a8b"/>
+<rect x="10" y="62" width="200" height="18" fill="#10263f"/><text x="110" y="75" font-size="10" fill="#fff" text-anchor="middle" {S}>AKVAN · 300,000+ EVACUATED</text></svg>'''
+    if kind == "ai-selloff":
+        return f'''<svg viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="90" fill="#e9e2cf"/>
+<line x1="0" y1="22" x2="300" y2="22" stroke="#d8cfb8" stroke-width="1"/><line x1="0" y1="47" x2="300" y2="47" stroke="#d8cfb8" stroke-width="1"/><line x1="0" y1="72" x2="300" y2="72" stroke="#d8cfb8" stroke-width="1"/>
+<rect x="30" y="28" width="26" height="44" fill="#10263f"/><rect x="76" y="38" width="26" height="34" fill="#10263f"/>
+<rect x="122" y="48" width="26" height="24" fill="#a33"/><rect x="168" y="58" width="26" height="14" fill="#a33"/><rect x="214" y="66" width="26" height="6" fill="#a33"/>
+<polyline points="24,24 84,36 130,48 176,60 222,70 268,78" stroke="#a33" stroke-width="3" fill="none"/>
+<polygon points="268,78 254,72 260,84" fill="#a33"/>
+<text x="262" y="30" font-size="24" fill="#a33" text-anchor="middle" {S}>−6.2%</text>
+<text x="262" y="46" font-size="9" fill="#5b6a7d" text-anchor="middle" {S}>TAIPEI · FRI</text></svg>'''
+    if kind == "cop31":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#f4ead6"/>
+<circle cx="55" cy="31" r="24" fill="none" stroke="#10263f" stroke-width="2"/>
+<ellipse cx="55" cy="31" rx="24" ry="9" fill="none" stroke="#10263f" stroke-width="1.5"/>
+<line x1="55" y1="7" x2="55" y2="55" stroke="#10263f" stroke-width="1.5"/>
+<path d="M31 31 a24 24 0 0 1 48 0" fill="none" stroke="#10263f" stroke-width="1.5"/>
+<rect x="108" y="10" width="70" height="42" fill="#fff" stroke="#10263f" stroke-width="2"/>
+<line x1="118" y1="22" x2="168" y2="22" stroke="#10263f" stroke-width="2"/>
+<line x1="118" y1="31" x2="168" y2="31" stroke="#10263f" stroke-width="2"/>
+<line x1="118" y1="40" x2="150" y2="40" stroke="#a33" stroke-width="2"/>
+<line x1="212" y1="14" x2="272" y2="52" stroke="#a33" stroke-width="4"/>
+<line x1="272" y1="14" x2="212" y2="52" stroke="#a33" stroke-width="4"/></svg>'''
+    if kind == "italy-strike":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#f4ead6"/>
+<circle cx="40" cy="24" r="8" fill="#10263f"/><circle cx="80" cy="24" r="8" fill="#10263f"/>
+<circle cx="120" cy="24" r="8" fill="#a33"/><circle cx="160" cy="24" r="8" fill="#10263f"/>
+<path d="M28 40 Q40 32 52 40 L52 52 L28 52 Z" fill="#10263f"/>
+<path d="M68 40 Q80 32 92 40 L92 52 L68 52 Z" fill="#10263f"/>
+<path d="M108 40 Q120 32 132 40 L132 52 L108 52 Z" fill="#a33"/>
+<path d="M148 40 Q160 32 172 40 L172 52 L148 52 Z" fill="#10263f"/>
+<rect x="196" y="8" width="84" height="26" fill="#fff" stroke="#10263f" stroke-width="2"/>
+<line x1="206" y1="18" x2="270" y2="18" stroke="#10263f" stroke-width="2"/>
+<line x1="206" y1="25" x2="250" y2="25" stroke="#10263f" stroke-width="2"/>
+<line x1="238" y1="34" x2="238" y2="56" stroke="#10263f" stroke-width="3"/></svg>'''
+    if kind == "japan-cpi":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#f4ead6"/>
+<rect x="36" y="36" width="30" height="16" fill="#10263f"/>
+<rect x="84" y="26" width="30" height="26" fill="#10263f"/>
+<rect x="132" y="16" width="30" height="36" fill="#10263f"/>
+<polyline points="30,44 90,32 150,20 210,12 272,8" fill="none" stroke="#a33" stroke-width="3"/>
+<polygon points="272,8 258,6 266,18" fill="#a33"/>
+<circle cx="210" cy="12" r="3" fill="#a33"/>
+<text x="216" y="58" font-size="11" fill="#10263f" text-anchor="middle" {S}>2.3%</text></svg>'''
+    if kind == "korea-court":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#f4ead6"/>
+<polygon points="150,6 250,24 50,24" fill="#10263f"/>
+<rect x="56" y="28" width="188" height="6" fill="#10263f"/>
+<rect x="66" y="34" width="10" height="20" fill="#10263f"/>
+<rect x="108" y="34" width="10" height="20" fill="#10263f"/>
+<rect x="150" y="34" width="10" height="20" fill="#a33"/>
+<rect x="192" y="34" width="10" height="20" fill="#10263f"/>
+<rect x="234" y="34" width="10" height="20" fill="#10263f"/>
+<rect x="56" y="54" width="188" height="4" fill="#10263f"/></svg>'''
+    if kind == "kenya-oil":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#f4ead6"/>
+<path d="M60 54 L96 8 L132 54" fill="none" stroke="#10263f" stroke-width="3"/>
+<line x1="72" y1="38" x2="120" y2="38" stroke="#10263f" stroke-width="2"/>
+<line x1="80" y1="24" x2="112" y2="24" stroke="#10263f" stroke-width="2"/>
+<line x1="96" y1="8" x2="96" y2="34" stroke="#10263f" stroke-width="2"/>
+<path d="M96 34 L96 44" stroke="#a33" stroke-width="3"/>
+<path d="M180 40 c0 -12 12 -16 12 -24 c0 8 12 12 12 24 a12 12 0 0 1 -24 0 Z" fill="#10263f"/>
+<rect x="230" y="20" width="52" height="30" fill="none" stroke="#10263f" stroke-width="2"/>
+<line x1="230" y1="28" x2="282" y2="28" stroke="#10263f" stroke-width="1.5"/>
+<line x1="230" y1="36" x2="282" y2="36" stroke="#10263f" stroke-width="1.5"/>
+<line x1="230" y1="44" x2="262" y2="44" stroke="#10263f" stroke-width="1.5"/></svg>'''
+    if kind == "cricket":
+        return f'''<svg viewBox="0 0 300 62" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="62" fill="#f4ead6"/>
+<rect x="60" y="6" width="22" height="48" rx="10" fill="#10263f" transform="rotate(24 71 30)"/>
+<rect x="66" y="2" width="10" height="18" rx="4" fill="#a33" transform="rotate(24 71 30)"/>
+<circle cx="200" cy="31" r="18" fill="#a33"/>
+<path d="M188 18 Q200 31 188 44 M212 18 Q200 31 212 44" fill="none" stroke="#f4ead6" stroke-width="2"/>
+<line x1="240" y1="20" x2="272" y2="20" stroke="#10263f" stroke-width="2"/>
+<line x1="240" y1="31" x2="282" y2="31" stroke="#10263f" stroke-width="2"/>
+<line x1="240" y1="42" x2="272" y2="42" stroke="#10263f" stroke-width="2"/></svg>'''
     raise ValueError(kind)
 
 def build_html(stories):
     news = [s for s in stories if s["section"] == "news"]
     leads = [s for s in news if s.get("lead")]
-    row2 = [s for s in news if s["n"] in (4, 5, 6, 7)]
-    row3 = [s for s in news if s["n"] in (8, 9, 10, 11)]
+    row2 = [s for s in news if s["n"] in (4, 5, 6, 7, 8)]
+    row3 = [s for s in news if s["n"] in (9, 10, 11, 12, 13)]
     briefs = [s for s in news if not s.get("lead")]
-    # NOTE: the DATE CHECK footer (dc_html below) states the 10 stories.json
+    # NOTE: the DATE CHECK footer (dc_html below) states the 9 stories.json
     # date-check items — verified to match 1:1. Keep them in sync if editing.
     regions = sorted({s["region"] for s in news})
     from collections import Counter
     rc = Counter(s["region"] for s in news)
-    region_line = " · ".join(f"{r} {rc[r]}" for r in regions)
+    # Coloured region bar (winner pattern): display names + counts, in the
+    # same order as the top entries show them.
+    region_display = {"EUROPE": ("Europe", "#3c5a8a"), "ASIA-PACIFIC": ("Asia-Pacific", "#a33"),
+                      "MIDEAST": ("Middle East", "#b97e2f"), "AFRICA": ("Africa", "#2f6f4d"),
+                      "THE AMERICAS": ("Americas", "#5b6a7d"), "OCEANIA": ("Oceania", "#7d5a8a"),
+                      "GLOBAL": ("Global", "#8a7a5a")}
+    regionbar_html = "".join(
+        f'<span class="rb" style="background:{region_display[r][1]}">{region_display[r][0]} {rc[r]}</span>'
+        for r in ("EUROPE", "ASIA-PACIFIC", "MIDEAST", "AFRICA", "THE AMERICAS", "OCEANIA", "GLOBAL")
+        if r in rc)
     pins = [(s["n"], s["lon"], s["lat"]) for s in leads if s.get("lon") is not None]
 
     def lead_html(s):
@@ -230,54 +333,58 @@ def build_html(stories):
 <div class="deck">{s["deck"]} <span class="tag">{s["proof"]}</span></div></div>'''
 
     def med_html(s):
+        # Med kickers omit the topic: at 5 per row the column is ~186px and
+        # "n · REGION · TOPIC" + source wrapped to two lines on #10/#12.
+        # Region + source fit on one line without the topic.
         return f'''<div class="story med audit" id="story-{s["n"]}">
 <div class="panel">{panel(s["panel"])}</div>
-<div class="kicker"><span class="rk">{s["n"]} · {s["region"]} · {s["topic"]}</span><span class="src">{s["source"]}</span></div>
+<div class="kicker"><span class="rk">{s["n"]} · {s["region"]}</span><span class="src">{s["source"]}</span></div>
 <div class="head">{s["title"]}</div>
 <div class="deck">{s["deck"]} <span class="tag">{s["proof"]}</span></div></div>'''
 
     briefs_html = "".join(
         f'<div class="brief"><span class="bn">{s["n"]}</span> {s["title"]}</div>' for s in briefs)
     numbers = [
-        ("110+", "Missiles fired at Ukraine overnight"),
-        ("400+", "Drones in Russia's overnight barrage"),
-        ("$2.36bn", "GTA VI's first-day sales (Sensor Tower)"),
-        ("−12%", "Anthropic shares, premarket Friday"),
-        ("M4.4", "Los Angeles earthquake, 03:25 PT"),
-        ("100,000", "EU–UK youth mobility places a year"),
+        ("3", "Bridges damaged in Kyiv"),
+        ("300,000+", "People moved to shelters before Akvan"),
+        ("−6.2%", "Taiwan's share index, Friday's close"),
+        ("100,000", "Youth visas a year in the UK–EU deal"),
+        ("2.3%", "Japan consumer inflation in October"),
+        ("118", "Runs by Glenn Phillips against India"),
     ]
     num_html = "".join(f'<div class="num"><div class="nv">{v}</div><div class="nl">{l}</div></div>' for v, l in numbers)
     # UTC timeline (v3, judge fix c3): rendered by timeline.py -- 5 items at
     # 16px in two rows (3+2) with full labels; clock times verified live.
     tl_html = timeline_html(TIMELINE_ITEMS)
-    # DATE CHECK footer: the 10 stories.json date-check items. Keep in sync.
+    # DATE CHECK footer: the 9 stories.json date-check items. Keep in sync.
+    # Framing is "left out as 19 Nov news" (never an admission about the
+    # page itself) plus a separate "not yet happened" line.
     dc_html = ("<b>DATE CHECK</b> — checked against the record. "
-               "Not 20 Nov news: Trilateral summit in Shenzhen (19 Nov) · "
-               "ICJ: Myanmar committed genocide (19 Nov) · "
-               "Anthropic IPO debuts +17% (19 Nov) · "
-               "Senate rejects Iran war-powers bid (19 Nov) · "
-               "Trump: no Iran call until new year (19 Nov) · "
-               "Third strike on Crimea Bridge (19 Nov) · "
-               "Voyager 1 reaches one light-day (18 Nov) · "
-               "Xi greets Trump in Shenzhen (18 Nov) · "
-               "GTA VI launches (19 Nov) · "
-               "Peltola wins Alaska Senate race (17 Nov).")
+               "Left out as Thursday 19 November's news: Trilateral summit in Shenzhen · "
+               "ICJ: Myanmar committed genocide · "
+               "Anthropic IPO debuts +17% · "
+               "Senate rejects Iran war-powers bid · "
+               "Trump: no Iran call until new year · "
+               "Third strike on Crimea Bridge · "
+               "GTA VI launches · "
+               "Pete Rose pardoned · "
+               "Fiona the hippo dies. "
+               "Not yet happened, so not shown: BepiColombo's entry into orbit round Mercury · "
+               "any final COP31 text.")
 
     return f'''<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 .page{{width:1024px;height:1024px;padding:2px 24px 2px;overflow:hidden}}
-.mast{{background:#10263f;color:#fff;display:flex;align-items:center;gap:16px;padding:1px 16px;border-bottom:4px solid #c9a227}}
-.cal{{background:#f6f1e5;color:#10263f;text-align:center;padding:4px 10px;flex:none}}
-.cal .m{{font-size:11px;font-weight:bold;letter-spacing:2px;color:#a33}}
-.cal .d{{font-size:22px;font-weight:bold;line-height:1;font-family:"DejaVu Serif",serif}}
-.cal .w{{font-size:9px;letter-spacing:1px}}
+.mast{{background:#f6f1e5;color:#10263f;display:flex;align-items:flex-end;gap:16px;padding:2px 0 6px;border-bottom:4px solid #c9a227}}
 .mt{{flex:1}}
-.mt .k{{color:#e8c85a;font-size:12px;letter-spacing:4px;font-weight:bold}}
-.mt h1{{font-family:"DejaVu Serif",serif;font-size:32px;line-height:1.02}}
-.mt .s{{font-size:11.5px;font-style:italic;color:#cfd8e3;margin-top:1px}}
-.meta{{text-align:right;font-size:11px;font-weight:bold;letter-spacing:1px;color:#e8c85a;line-height:1.5;flex:none}}
-.row{{display:flex;gap:12px;margin-top:0}}
+.mt .k{{color:#a33;font-size:13px;letter-spacing:5px;font-weight:bold}}
+.mt h1{{font-family:"DejaVu Serif",serif;font-size:44px;line-height:1.05;color:#10263f}}
+.mt .s{{font-size:11.5px;font-style:italic;color:#5b6a7d;margin-top:2px}}
+.meta{{text-align:right;font-size:11px;font-weight:bold;letter-spacing:1px;color:#a33;line-height:1.5;flex:none}}
+.regionbar{{display:flex;gap:6px;margin-top:4px}}
+.regionbar .rb{{flex:1;text-align:center;color:#fff;font-size:11px;font-weight:bold;padding:3px 0;border-radius:2px;white-space:nowrap}}
+.row{{display:flex;gap:12px;margin-top:4px}}
 .story{{flex:1;min-width:0}}
 .panel svg{{display:block;width:100%;height:auto}}
 .kicker{{display:flex;justify-content:space-between;font-size:10px;font-weight:bold;margin-top:2px}}
@@ -289,7 +396,7 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 .med .deck{{line-height:1.2}}
 .med .kicker{{margin-top:1px}}
 .tag{{font-size:8px;font-weight:bold;border:1px solid #8a97a8;border-radius:2px;padding:0 3px;color:#5b6a7d;white-space:nowrap}}
-.mapbrief{{display:flex;gap:14px;margin-top:0}}
+.mapbrief{{display:flex;gap:14px;margin-top:4px}}
 .mapbox{{width:296px;flex:none}}
 .mapbox h3,.briefs h3{{font-size:11px;letter-spacing:2px;border-bottom:2px solid #10263f;padding-bottom:3px;margin-bottom:3px}}
 .legend{{font-size:8.5px;color:#5b6a7d;margin-top:3px;line-height:1.4}}
@@ -312,21 +419,21 @@ body{{background:#f6f1e5;font-family:"Noto Sans",sans-serif;color:#1a1a1a}}
 #footbottom{{display:none}}
 </style></head><body><div class="page audit" id="page">
 <div class="mast">
-<div class="cal"><div class="m">NOV</div><div class="d">20</div><div class="w">FRI · 2026</div></div>
-<div class="mt"><div class="k">THE DAY IN WORLD NEWS</div><h1>Friday 20 November 2026</h1>
+<div class="mt"><div class="k">THE WORLD IN ONE DAY</div><h1>Friday 20 November 2026</h1>
 <div class="s">Everything on this page happened, or was first reported, on Friday 20 November 2026.</div></div>
-<div class="meta">43 STORIES<br>8 REGIONS<br>ONE PAGE</div></div>
+<div class="meta">35 STORIES<br>7 REGIONS<br>ONE PAGE</div></div>
+<div class="numbers audit" id="numbers">{num_html}</div>
+<div class="regionbar">{regionbar_html}</div>
 <div class="row">{''.join(lead_html(s) for s in leads[:3])}</div>
 <div class="row">{''.join(med_html(s) for s in row2)}</div>
 <div class="row">{''.join(med_html(s) for s in row3)}</div>
 <div class="mapbrief">
 <div class="mapbox"><h3>WHERE IT HAPPENED</h3>{map_svg(pins)}
-<div class="legend">Pins 1–11 mark the lead stories.<br><b>{region_line}</b></div></div>
+<div class="legend">Pins 1–13 mark the lead stories.</div></div>
 <div class="briefs"><h3>ALSO ON FRIDAY 20 NOVEMBER</h3><div class="bcols audit" id="briefs">{briefs_html}</div></div></div>
 <div class="timeline audit" id="timeline">{tl_html}</div>
-<div class="numbers audit" id="numbers">{num_html}</div>
 <div class="datecheck audit" id="datecheck">{dc_html}</div>
-<div class="foot audit" id="foot">All 43 stories happened, or were first reported, on Friday 20 November 2026. Disputed claims are attributed, not stated as fact. Original drawings.<br>Sources: Reuters · AP · AFP · CNN · BBC · USA Today · Investopedia · NME · Le Monde · Just Security · USGS · Sensor Tower</div>
+<div class="foot audit" id="foot">All 35 stories happened, or were first reported, on Friday 20 November 2026. Disputed claims are attributed, not stated as fact. Original drawings.<br>Sources: Reuters · AP · AFP · CNN · BBC · Investopedia · USGS · ICC · Xinhua · Anadolu · JoongAng Daily · AllAfrica</div>
 <pre id="audit"></pre>
 <pre id="tlaudit"></pre>
 <pre id="footbottom"></pre>
@@ -388,25 +495,25 @@ def main():
     overflow = [a["id"] for a in audit if a["overflow"]]
     page = next((a for a in audit if a["id"] == "page"), {})
     spec = {
-        "masthead": "THE WORLD TODAY — Friday 20 November 2026",
+        "masthead": "THE WORLD IN ONE DAY — Friday 20 November 2026",
         "subline": "Everything on this page happened, or was first reported, on Friday 20 November 2026.",
-        "layout": "Newspaper front page: navy masthead, 3 large lead panels, 2 rows of medium panels (4 + 4), dotted world map with numbered pins 1-11 beside 32 numbered briefs in 2 columns at 16px (briefs one line each, max 40 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 16px, two rows 3+2), numbers strip (6 numbers), DATE CHECK footer (10 items), sources footer. Region counts sit under the map.",
+        "layout": "Newspaper front page: cream masthead with giant serif date, 6-number strip and coloured region bar under the masthead, 3 large lead panels, 2 rows of medium panels (5 + 5), dotted world map with numbered pins 1-13 beside 22 numbered briefs in 2 columns at 16px (briefs one line each, max ~35 chars, so the brief words stay readable at 300px), UTC timeline strip (5 items at 16px, two rows 3+2), DATE CHECK footer (9 items, 'left out as 19 Nov news' framing), sources footer. Region counts in the coloured bar under the masthead.",
         "proof_tags": "CONFIRMED / CLAIM tags on lead stories; claims attributed to sources.",
         "timeline": [f"{t} — {l}" for t, l in TIMELINE_ITEMS],
         "timeline_audit": tl_audit,
-        "numbers": ["110+ Missiles fired at Ukraine overnight",
-                    "400+ Drones in Russia's overnight barrage",
-                    "$2.36bn GTA VI's first-day sales (Sensor Tower)",
-                    "−12% Anthropic shares, premarket Friday",
-                    "M4.4 Los Angeles earthquake, 03:25 PT",
-                    "100,000 EU–UK youth mobility places a year"],
+        "numbers": ["3 Bridges damaged in Kyiv",
+                    "300,000+ People moved to shelters before Akvan",
+                    "−6.2% Taiwan's share index, Friday's close",
+                    "100,000 Youth visas a year in the UK–EU deal",
+                    "2.3% Japan consumer inflation in October",
+                    "118 Runs by Glenn Phillips against India"],
         "min_body_px": 12,
         "page_scroll_height": page.get("sh"),
         "foot_bottom_px": foot_bottom,
         "wrapped_briefs": wrapped_briefs,
         "overflow": overflow,
         "audit": audit,
-        "legibility_note": "At 300px the 32 briefs are word-readable as distinct single lines (e.g. 'US Senate passes energy bill 62–33', 'White House cyber chief to leave', 'GTA VI: $2.36bn in 24 hours', 'Kyiv hits 3 Russian missile launchers'); lead heads and deck text stay legible; panels read as flat illustrations with labels intact; map pins distinct. Timeline strip (16px, two rows 3+2) is fully legible at full resolution; at 300px all five items are word-readable (verified by viewing a 3x zoom of the actual 300px downscale: '01:25 KYIV · Barrage', 'OVERNIGHT · Missiles enter Poland', '08:55 UTC · Anthropic −12%', '11:25 UTC · LA quake M4.4', '21:00 UTC · Wall St down').",
+        "legibility_note": "Checked by viewing entry.png full-res and the 300px downscale: at 300px the masthead date, the six numbers-strip values and the three lead heads stay word-readable; the 22 briefs read as distinct single lines; the region bar reads as coloured chips; the timeline's five items are word-readable ('01:25 KYIV · Barrage', 'OVERNIGHT · Missiles enter Poland', '08:00 IST · Akvan landfall Gopalpur', '11:25 UTC · LA quake M4.4', '21:00 UTC · Wall St down'); map pins stay distinct, Europe/Mideast and East-Asia clusters separated by leader lines. Lead decks and med decks are legible at full resolution; at 300px they read as text lines rather than individual words. Med kickers are one line each (topic dropped from med kickers in v4 to avoid wrapping).",
     }
     (HERE / "render_spec.json").write_text(json.dumps(spec, indent=2))
     size = out.stat().st_size if out.exists() else 0

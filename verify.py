@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Repo-local verification for the news-image-20261120 v3 entry.
+"""Repo-local verification for the news-image-20261120 v4 entry.
 
 Build-time only (not part of the graded program: main.py just copies
-entry.png). Runs the full local gate for v3 and prints a PASS/FAIL table:
+entry.png). Runs the full local gate for v4 and prints a PASS/FAIL table:
 
   1. determinism -- render.py twice, entry.png byte-identical both runs
   2. render spec -- min body font >= 10px, no overflow, foot_bottom <= 1024,
@@ -137,7 +137,7 @@ def main():
         print(f"  ok   {n}")
     for p in problems:
         print(f"  FAIL {p}")
-    print(f"== v3 verify: {'PASS' if not problems else 'FAIL'} "
+    print(f"== v4 verify: {'PASS' if not problems else 'FAIL'} "
           f"({len(problems)} problem(s))")
     return 0 if not problems else 1
 
